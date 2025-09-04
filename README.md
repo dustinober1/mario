@@ -1,38 +1,83 @@
-# 🍄 Super Mario Bros Reinforcement Learning Agent
+# 🍄 Mario RL - Professional Deep Reinforcement Learning
 
 A professional-grade deep reinforcement learning implementation for training AI agents to play Super Mario Bros using PPO (Proximal Policy Optimization) and stable-baselines3.
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
 [![Stable-Baselines3](https://img.shields.io/badge/SB3-Latest-green.svg)](https://stable-baselines3.readthedocs.io)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![CI](https://github.com/dustinober1/mario/workflows/CI/badge.svg)](https://github.com/dustinober1/mario/actions)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## 🎯 Overview
 
 This project demonstrates advanced reinforcement learning techniques applied to the classic Super Mario Bros game. The agent learns to navigate through levels, avoid obstacles, defeat enemies, and reach the flag pole through trial and error, gradually improving its performance over thousands of episodes.
 
-### Key Features
+### ✨ Key Features
 
-- **Professional Architecture**: Modular, well-documented codebase with proper error handling
-- **Advanced Training**: PPO algorithm with optimized hyperparameters and callbacks
-- **Comprehensive Evaluation**: Detailed performance metrics and visualization tools
-- **Model Management**: Automatic checkpointing, model comparison, and version control
-- **Tensorboard Integration**: Real-time training monitoring and logging
-- **Multi-level Support**: Train on different Mario levels with configurable difficulty
-- **Parallel Training**: Support for multiple environment instances
+- **🏗️ Professional Architecture**: Modular, well-documented codebase with proper error handling
+- **🚀 Advanced Training**: PPO algorithm with optimized hyperparameters and callbacks
+- **📊 Comprehensive Evaluation**: Detailed performance metrics and visualization tools
+- **💾 Model Management**: Automatic checkpointing, model comparison, and version control
+- **📈 Tensorboard Integration**: Real-time training monitoring and logging
+- **🎮 Multi-level Support**: Train on different Mario levels with configurable difficulty
+- **⚡ Parallel Training**: Support for multiple environment instances
+- **🛠️ CLI Interface**: Easy-to-use command-line tools for training and evaluation
 
 ## 🏗️ Project Structure
 
 ```
 mario/
-├── mario.py              # Main training script with MarioEnvironment and MarioAgent classes
-├── config.py             # Configuration management and hyperparameters
-├── utils.py              # Utility functions for logging, plotting, and data management
-├── evaluate.py           # Comprehensive model evaluation and comparison tools
-├── visualize.py          # Advanced visualization and plotting utilities
-├── setup.py              # Package installation and dependency management
-├── requirements.txt      # Python dependencies
-├── README.md             # Project documentation
-└── .gitignore           # Git ignore patterns
+├── src/
+│   └── mario_rl/              # Main package
+│       ├── __init__.py         # Package initialization
+│       ├── agents/             # RL agent implementations
+│       │   ├── __init__.py
+│       │   └── mario_agent.py  # PPO-based Mario agent
+│       ├── environments/       # Game environment wrappers
+│       │   ├── __init__.py
+│       │   └── mario_env.py    # Mario environment wrapper
+│       ├── models/             # Model implementations
+│       │   ├── __init__.py
+│       │   └── ppo_model.py    # PPO model wrapper
+│       ├── configs/            # Configuration management
+│       │   ├── __init__.py
+│       │   └── training_config.py
+│       ├── utils/              # Utility functions
+│       │   ├── __init__.py
+│       │   ├── logging_utils.py
+│       │   └── plotting_utils.py
+│       └── cli/                # Command-line interface
+│           ├── __init__.py
+│           ├── main.py         # Main CLI entry point
+│           ├── train.py        # Training command
+│           ├── evaluate.py     # Evaluation command
+│           └── visualize.py    # Visualization command
+├── tests/                      # Test suite
+│   ├── __init__.py
+│   ├── conftest.py            # Test configuration
+│   └── test_mario.py          # Basic tests
+├── examples/                   # Example scripts
+│   └── basic_training.py      # Basic training example
+├── docs/                      # Documentation
+│   ├── README.md              # Documentation overview
+│   ├── api/                   # API reference
+│   ├── examples/              # Code examples
+│   └── tutorials/             # Step-by-step guides
+├── scripts/                   # Utility scripts
+├── notebooks/                 # Jupyter notebooks
+├── .github/                   # GitHub configuration
+│   └── workflows/             # CI/CD workflows
+├── setup.py                   # Package installation
+├── pyproject.toml             # Modern Python packaging
+├── requirements.txt            # Python dependencies
+├── Makefile                   # Development commands
+├── pytest.ini                 # Test configuration
+├── .pre-commit-config.yaml    # Code quality hooks
+├── README.md                  # This file
+├── CHANGELOG.md               # Version history
+├── CONTRIBUTING.md            # Contribution guidelines
+├── CODE_OF_CONDUCT.md         # Community standards
+└── SECURITY.md                # Security policy
 ```
 
 ## 🛠️ Installation
@@ -56,70 +101,84 @@ mario/
    source mario_env/bin/activate  # On Windows: mario_env\Scripts\activate
    ```
 
-3. **Install dependencies**:
+3. **Install the package**:
    ```bash
-   pip install -r requirements.txt
+   # Install in development mode
+   pip install -e .
+   
+   # Install with development dependencies
+   pip install -e ".[dev]"
    ```
 
-4. **Install the package** (optional):
+4. **Install pre-commit hooks** (optional but recommended):
    ```bash
-   pip install -e .
+   pre-commit install
    ```
 
 ## 🚀 Usage
 
-### Basic Training
+### Command Line Interface
 
-Train an agent on World 1-1 with default settings:
+The project provides a comprehensive CLI for easy interaction:
 
 ```bash
-python mario.py
+# Train a new agent on World 1-1
+mario-rl train --level 1-1 --timesteps 100000
+
+# Train with complex movements and multiple environments
+mario-rl train --movement complex --n-envs 4 --timesteps 500000
+
+# Continue training from a checkpoint
+mario-rl train --load-model checkpoints/ppo_mario_100000.zip
+
+# Evaluate a trained model
+mario-rl evaluate --model checkpoints/ppo_mario_final.zip --episodes 100
+
+# Visualize training results
+mario-rl visualize --log-file mario_training.log --type training
 ```
 
-### Advanced Training Options
+### Python API
 
-```bash
-# Train on a specific level with custom parameters
-python mario.py --level 1-2 --timesteps 500000 --movement complex
+For more control, use the Python API directly:
 
-# Train with multiple parallel environments
-python mario.py --n_envs 4 --timesteps 1000000
+```python
+from mario_rl.environments import MarioEnvironment
+from mario_rl.agents import MarioAgent
+from mario_rl.configs import TrainingConfig
 
-# Resume training from a checkpoint
-python mario.py --load_model checkpoints/ppo_mario_20240115_143022.zip
+# Create environment
+env = MarioEnvironment(level="1-1", movement_type="simple")
+vec_env = env.create_vectorized_env(n_envs=1)
 
-# Evaluation only mode
-python mario.py --mode evaluate --load_model models/best_model.zip --eval_episodes 50
+# Create agent with configuration
+config = TrainingConfig(
+    level="1-1",
+    movement_type="simple",
+    total_timesteps=100000,
+    learning_rate=3e-4
+)
+agent = MarioAgent(vec_env, config)
+
+# Train the agent
+model = agent.create_model()
+agent.train()
+
+# Evaluate performance
+results = agent.evaluate(n_eval_episodes=10)
+print(f"Mean reward: {results['mean_reward']:.2f}")
 ```
 
-### Model Evaluation
+### Examples
 
-Comprehensive evaluation with detailed metrics:
-
-```bash
-# Evaluate a single model
-python evaluate.py models/ppo_mario_final.zip --episodes 100 --render
-
-# Compare multiple models
-python evaluate.py --compare model1.zip model2.zip model3.zip --episodes 50
-
-# Evaluate on different levels
-python evaluate.py model.zip --level 1-4 --episodes 20
-```
-
-### Visualization
-
-Generate training progress and performance plots:
+Run the included examples:
 
 ```bash
-# Plot training progress
-python visualize.py --type training --input mario_training.log --output training_plot.png
+# Basic training example
+python examples/basic_training.py
 
-# Visualize evaluation results
-python visualize.py --type evaluation --input evaluation_results.json
-
-# Create model comparison heatmap
-python visualize.py --type heatmap --input comparison_results.json
+# Or use the Makefile
+make run-mario
 ```
 
 ## 📊 Performance Monitoring
@@ -131,12 +190,6 @@ Monitor training in real-time:
 ```bash
 tensorboard --logdir mario_tensorboard/
 ```
-
-View metrics including:
-- Episode rewards and moving averages
-- Policy loss and value function loss
-- Learning rate schedules
-- Environment-specific metrics (x-position, completion rate)
 
 ### Training Logs
 
@@ -177,7 +230,7 @@ Penalties for:
 
 ### Hyperparameters
 
-Key training parameters in `config.py`:
+Key training parameters in `TrainingConfig`:
 
 ```python
 learning_rate: 3e-4        # PPO learning rate
@@ -200,6 +253,54 @@ export MARIO_LEVEL=2-1
 export MARIO_N_ENVS=8
 ```
 
+## 🧪 Development
+
+### Running Tests
+
+```bash
+# Run all tests
+pytest
+
+# Run with coverage
+pytest --cov=mario_rl --cov-report=html
+
+# Run specific test categories
+pytest -m "not slow"  # Skip slow tests
+pytest -m integration  # Only integration tests
+```
+
+### Code Quality
+
+```bash
+# Format code
+make format
+
+# Run linting
+make lint
+
+# Type checking
+make type-check
+
+# Run all quality checks
+make ci
+```
+
+### Development Commands
+
+```bash
+# Install development dependencies
+make install-dev
+
+# Clean build artifacts
+make clean
+
+# Build package
+make build
+
+# Quick start development environment
+make quick-start
+```
+
 ## 📈 Results and Performance
 
 ### Typical Training Results
@@ -210,63 +311,25 @@ After 200,000 timesteps on World 1-1:
 - **Max X-Position**: 3200+ (level length: 3266)
 - **Training Time**: 2-4 hours (depending on hardware)
 
-### Model Comparison
-
-The evaluation suite provides comprehensive metrics:
-- Mean/median rewards with confidence intervals
-- Success rates across multiple runs
-- Performance consistency analysis
-- Learning curve visualization
-
-## 🔬 Technical Details
-
-### Algorithm: Proximal Policy Optimization (PPO)
-
-PPO is chosen for its:
-- Sample efficiency in complex environments
-- Stable training characteristics
-- Good performance on visual input tasks
-- Robust hyperparameter sensitivity
-
-### Network Architecture
-
-- **Policy Network**: CNN feature extractor + fully connected layers
-- **Value Network**: Shared CNN features + value head
-- **Input**: RGB frames (84x84x4 stacked frames)
-- **Output**: Action probabilities + state value estimates
-
-### Environment Preprocessing
-
-- Frame stacking (4 consecutive frames)
-- Grayscale conversion and resizing
-- Reward clipping and normalization
-- Action space discretization
-
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these guidelines:
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
-1. **Fork the repository**
-2. **Create a feature branch**: `git checkout -b feature-name`
-3. **Follow code style**: Use black formatting and type hints
-4. **Add tests**: Include unit tests for new functionality
-5. **Update documentation**: Keep README and docstrings current
-6. **Submit a pull request**: Include a clear description of changes
-
-### Development Setup
+### Quick Contribution Setup
 
 ```bash
+# Fork and clone the repository
+git clone https://github.com/YOUR_USERNAME/mario.git
+cd mario
+
 # Install development dependencies
-pip install -e ".[dev]"
+make install-dev
 
-# Run code formatting
-black mario/
+# Run tests to ensure everything works
+make test
 
-# Run type checking
-mypy mario/
-
-# Run tests
-pytest tests/
+# Make your changes and run quality checks
+make ci
 ```
 
 ## 📄 License
@@ -284,7 +347,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 For questions, suggestions, or collaboration opportunities:
 - GitHub Issues: [Report bugs or request features](https://github.com/dustinober1/mario/issues)
-- Email: [Your contact information]
+- GitHub Discussions: [Join the conversation](https://github.com/dustinober1/mario/discussions)
 
 ---
 
