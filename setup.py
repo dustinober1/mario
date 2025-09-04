@@ -17,7 +17,8 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/dustinober1/mario",
-    packages=find_packages(),
+    packages=find_packages(where="src"),
+    package_dir={"": "src"},
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
@@ -44,7 +45,7 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "mario-train=mario:main",
+            "mario-rl=mario_rl.cli.main:main",
         ],
     },
 )
