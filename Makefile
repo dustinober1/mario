@@ -30,7 +30,31 @@ test:
 	pytest tests/ -v
 
 test-cov:
-	pytest tests/ --cov=mario --cov-report=html --cov-report=term-missing
+	pytest tests/ --cov=mario_rl --cov-report=html --cov-report=term-missing
+
+test-unit:
+	pytest tests/ -m "unit" -v
+
+test-integration:
+	pytest tests/ -m "integration" -v
+
+test-performance:
+	pytest tests/ -m "performance" -v
+
+test-slow:
+	pytest tests/ -m "slow" -v
+
+test-fast:
+	pytest tests/ -m "not slow" -v
+
+test-parallel:
+	pytest tests/ -n auto
+
+test-html:
+	pytest tests/ --html=reports/test_report.html --self-contained-html
+
+test-benchmark:
+	pytest tests/ --benchmark-only --benchmark-sort=mean
 
 # Code quality
 lint:
@@ -51,6 +75,21 @@ pre-commit:
 # CI checks (run locally)
 ci: format lint type-check test
 
+# Full test suite
+test-all: test-unit test-integration test-performance
+
+# Test coverage with different levels
+test-cov-html:
+	pytest tests/ --cov=mario_rl --cov-report=html --cov-report=term-missing --html=reports/test_report.html --self-contained-html
+
+# Performance testing
+test-perf:
+	pytest tests/test_performance.py -v --benchmark-only
+
+# Memory profiling
+test-memory:
+	pytest tests/ --profile --profile-svg
+
 # Cleaning
 clean:
 	rm -rf build/
@@ -60,6 +99,9 @@ clean:
 	rm -rf htmlcov/
 	rm -rf .coverage
 	rm -rf .mypy_cache/
+	rm -rf reports/
+	rm -rf .benchmarks/
+	rm -rf .profile/
 	find . -type d -name __pycache__ -delete
 	find . -type f -name "*.pyc" -delete
 
