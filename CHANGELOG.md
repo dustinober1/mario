@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- GPU acceleration support for M1/M2 Macs using Metal Performance Shaders (MPS)
+- Live visual training with real-time Mario gameplay rendering
+- Optimized training scripts for Apple Silicon hardware
+- Fixed buffer slicing errors in training callbacks
+- Production-quality training pipeline with clean output
+- Multiple training variants: visual, manual, and production modes
+- GPU-optimized hyperparameters (batch size 256, n_steps 2048)
+- Real-time performance monitoring during training
 - GitHub Actions CI/CD pipeline
 - Issue and Pull Request templates
 - Changelog documentation
@@ -16,6 +24,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Improved project documentation structure
+- Enhanced training performance from ~37 to ~74 steps/sec (2x speedup on M1 Mac)
+- Upgraded to gymnasium compatibility with legacy gym environments
+- Optimized batch processing for GPU acceleration
+
+### Fixed
+- Buffer slicing TypeError in training callbacks
+- Gym/gymnasium compatibility issues
+- Step interface mismatches in environment wrappers
+- NumPy version conflicts with nes-py dependency
 
 ## [1.0.0] - 2024-01-15
 

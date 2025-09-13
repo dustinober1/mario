@@ -31,10 +31,18 @@ mario/
 │       ├── configs/            # Configuration management
 │       ├── utils/              # Utility functions
 │       └── cli/                # Command-line interface
-├── examples/                   # Example scripts
+├── training_scripts/          # Training script collection
+│   ├── train_mario.py         # Original training script
+│   ├── train_mario_production.py  # Clean production version
+│   ├── train_mario_live_visual.py # Training with live rendering
+│   └── README.md              # Training scripts documentation
+├── models/                    # Trained models and artifacts
+│   ├── mario_live_trained.zip # GPU-trained model
+│   └── README.md              # Model usage documentation
+├── examples/                  # Example scripts
 │   └── basic_training.py      # Basic training example
 ├── tests/                     # Test suite
-├── train_mario.py             # Main training script
+├── docs/                      # Documentation
 ├── requirements.txt           # Python dependencies
 └── README.md                  # This file
 ```
@@ -70,16 +78,17 @@ mario/
 
 ### Train Mario AI
 
-Run the main training script to start training Mario:
+Run the production training script to start training Mario:
 
 ```bash
-python train_mario.py
+python training_scripts/train_mario_production.py
 ```
 
 This will:
 - Create a Mario environment for World 1-1
-- Set up a PPO agent with optimized hyperparameters  
-- Train for 20,000 timesteps with live progress updates
+- Set up a PPO agent with optimized hyperparameters for GPU acceleration
+- Train for 20,000 timesteps with clean progress output
+- Automatically save the trained model to the models/ directory
 - Save checkpoints every 2,000 steps
 - Show distance traveled, rewards, and performance metrics
 - Save the final trained model
@@ -147,7 +156,7 @@ The training tracks several key metrics:
 
 ## 🔧 Configuration
 
-Key training parameters in `train_mario.py`:
+Key training parameters in `training_scripts/train_mario_production.py`:
 
 ```python
 model = PPO(
