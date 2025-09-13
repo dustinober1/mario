@@ -1,43 +1,35 @@
 # Core RL and ML libraries
-gym==0.21.0
-stable-baselines3==1.8.0
-torch==2.0.0
-torchvision==0.15.1
-numpy==1.24.3
+gymnasium==1.2.0
+stable-baselines3==2.7.0
+torch==2.8.0
+torchvision==0.23.0
+numpy==1.26.4
 
 # Mario environment
 gym-super-mario-bros==7.4.0
 nes-py==8.2.1
 
+# Environment compatibility
+shimmy[gym-v21]
+
+# Image processing
+opencv-python==4.12.0.88
+
 # Data analysis and visualization
-matplotlib==3.7.1
-seaborn==0.12.2
-pandas==2.0.1
-plotly==5.14.1
+matplotlib==3.10.6
+seaborn==0.13.2
+pandas==2.3.2
 
 # Logging and monitoring
-tensorboard==2.13.0
-wandb==0.15.3
+tensorboard==2.20.0
 
 # Utilities
-tqdm==4.65.0
-Pillow==9.5.0
-requests==2.30.0
+tqdm==4.67.1
+Pillow==11.3.0
 
-# Optional development dependencies
-# Uncomment for development setup
+# Development dependencies (optional)
 black==23.3.0
 mypy==1.3.0
 pytest==7.3.1
-pre-commit==3.3.2
-flake8==6.0.0
 pytest-cov==4.1.0
 isort==5.12.0
-
-# Additional testing dependencies
-pytest-html==3.2.0
-pytest-xdist==3.3.1
-pytest-mock==3.11.1
-pytest-benchmark==4.0.0
-memory-profiler==0.61.0
-psutil==5.9.5

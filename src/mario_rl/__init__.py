@@ -12,14 +12,11 @@ __email__ = "developer@example.com"
 # Main imports
 from .agents import MarioAgent
 from .environments import MarioEnvironment
-from .models import PPOModel
 from .configs import TrainingConfig, EnvironmentConfig
 
 __all__ = [
     "MarioAgent",
     "MarioEnvironment", 
-    "PPOModel",
     "TrainingConfig",
-    "EnvironmentConfig",
-    "__version__",
+    "EnvironmentConfig"
 ]

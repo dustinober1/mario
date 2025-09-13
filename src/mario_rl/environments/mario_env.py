@@ -3,13 +3,77 @@
 import logging
 from typing import Optional
 
-import gym
+import gymnasium as gym
 import numpy as np
 from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv
 from stable_baselines3.common.monitor import Monitor
 from gym_super_mario_bros.actions import SIMPLE_MOVEMENT, COMPLEX_MOVEMENT
 from gym_super_mario_bros import make
 from nes_py.wrappers import JoypadSpace
+import cv2
+
+logger = logging.getLogger(__name__)
+
+
+class FrameSkipWrapper(gym.Wrapper):
+    """Wrapper to skip frames and return only every nth frame."""
+    
+    def __init__(self, env, skip=4):
+        super().__init__(env)
+        self._skip = skip
+
+    def step(self, action):
+        total_reward = 0.0
+        for _ in range(self._skip):
+            obs, reward, terminated, truncated, info = self.env.step(action)
+            total_reward += reward
+            if terminated or truncated:
+                break
+        return obs, total_reward, terminated, truncated, info
+
+
+class GrayScaleWrapper(gym.ObservationWrapper):
+    """Convert RGB observation to grayscale."""
+    
+    def __init__(self, env):
+        super().__init__(env)
+        old_shape = self.observation_space.shape
+        self.observation_space = gym.spaces.Box(
+            low=0, high=255, shape=(old_shape[0], old_shape[1], 1), dtype=np.uint8
+        )
+
+    def observation(self, observation):
+        observation = cv2.cvtColor(observation, cv2.COLOR_RGB2GRAY)
+        return np.expand_dims(observation, axis=-1)
+
+
+class ResizeWrapper(gym.ObservationWrapper):
+    """Resize observation to specified shape."""
+    
+    def __init__(self, env, shape=(84, 84)):
+        super().__init__(env)
+        self.shape = shape
+        self.observation_space = gym.spaces.Box(
+            low=0, high=255, shape=(shape[0], shape[1], 1), dtype=np.uint8
+        )
+
+    def observation(self, observation):
+        observation = cv2.resize(observation, self.shape, interpolation=cv2.INTER_AREA)
+        return np.expand_dims(observation, axis=-1)
+
+
+class NormalizeWrapper(gym.ObservationWrapper):
+    """Normalize observations to [0, 1] range."""
+    
+    def __init__(self, env):
+        super().__init__(env)
+        old_shape = self.observation_space.shape
+        self.observation_space = gym.spaces.Box(
+            low=0, high=1, shape=old_shape, dtype=np.float32
+        )
+
+    def observation(self, observation):
+        return observation.astype(np.float32) / 255.0
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +98,13 @@ class MarioEnvironment:
             env_name = f'SuperMarioBros-{self.level}-v0'
             env = make(env_name)
             env = JoypadSpace(env, self.movement)
+            
+            # Apply preprocessing wrappers
+            env = FrameSkipWrapper(env, skip=4)
+            env = GrayScaleWrapper(env)
+            env = ResizeWrapper(env, shape=(84, 84))
+            env = NormalizeWrapper(env)
+            
             env = Monitor(env)
             logger.info(f"Created environment: {env_name}")
             return env

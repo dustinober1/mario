@@ -1,27 +1,23 @@
-# 🍄 Mario RL - Professional Deep Reinforcement Learning
+# 🍄 Mario RL - Deep Reinforcement Learning for Super Mario Bros
 
-A professional-grade deep reinforcement learning implementation for training AI agents to play Super Mario Bros using PPO (Proximal Policy Optimization) and stable-baselines3.
+A deep reinforcement learning implementation for training AI agents to play Super Mario Bros using PPO (Proximal Policy Optimization) and stable-baselines3.
 
-[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
-[![Stable-Baselines3](https://img.shields.io/badge/SB3-Latest-green.svg)](https://stable-baselines3.readthedocs.io)
+[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://python.org)
+[![Stable-Baselines3](https://img.shields.io/badge/SB3-2.7.0-green.svg)](https://stable-baselines3.readthedocs.io)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![CI](https://github.com/dustinober1/mario/workflows/CI/badge.svg)](https://github.com/dustinober1/mario/actions)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## 🎯 Overview
 
-This project demonstrates advanced reinforcement learning techniques applied to the classic Super Mario Bros game. The agent learns to navigate through levels, avoid obstacles, defeat enemies, and reach the flag pole through trial and error, gradually improving its performance over thousands of episodes.
+This project demonstrates reinforcement learning techniques applied to the classic Super Mario Bros game. The agent learns to navigate through World 1-1, avoid obstacles, and reach as far as possible through trial and error, gradually improving its performance over thousands of episodes.
 
 ### ✨ Key Features
 
-- **🏗️ Professional Architecture**: Modular, well-documented codebase with proper error handling
-- **🚀 Advanced Training**: PPO algorithm with optimized hyperparameters and callbacks
-- **📊 Comprehensive Evaluation**: Detailed performance metrics and visualization tools
-- **💾 Model Management**: Automatic checkpointing, model comparison, and version control
-- **📈 Tensorboard Integration**: Real-time training monitoring and logging
-- **🎮 Multi-level Support**: Train on different Mario levels with configurable difficulty
-- **⚡ Parallel Training**: Support for multiple environment instances
-- **🛠️ CLI Interface**: Easy-to-use command-line tools for training and evaluation
+- **� Mario AI Training**: Train AI agents to play Super Mario Bros World 1-1
+- **🚀 PPO Algorithm**: Uses Proximal Policy Optimization for stable learning
+- **📊 Live Progress**: Real-time training progress with performance metrics
+- **💾 Model Checkpoints**: Automatic saving of trained models
+- **🎯 Easy Setup**: Simple installation and training process
+- **📈 Performance Tracking**: Distance traveled, rewards, and improvement metrics
 
 ## 🏗️ Project Structure
 
@@ -29,25 +25,186 @@ This project demonstrates advanced reinforcement learning techniques applied to 
 mario/
 ├── src/
 │   └── mario_rl/              # Main package
-│       ├── __init__.py         # Package initialization
+│       ├── __init__.py         # Package initialization  
 │       ├── agents/             # RL agent implementations
-│       │   ├── __init__.py
-│       │   └── mario_agent.py  # PPO-based Mario agent
 │       ├── environments/       # Game environment wrappers
-│       │   ├── __init__.py
-│       │   └── mario_env.py    # Mario environment wrapper
-│       ├── models/             # Model implementations
-│       │   ├── __init__.py
-│       │   └── ppo_model.py    # PPO model wrapper
 │       ├── configs/            # Configuration management
-│       │   ├── __init__.py
-│       │   └── training_config.py
 │       ├── utils/              # Utility functions
-│       │   ├── __init__.py
-│       │   ├── logging_utils.py
-│       │   └── plotting_utils.py
 │       └── cli/                # Command-line interface
-│           ├── __init__.py
+├── examples/                   # Example scripts
+│   └── basic_training.py      # Basic training example
+├── tests/                     # Test suite
+├── train_mario.py             # Main training script
+├── requirements.txt           # Python dependencies
+└── README.md                  # This file
+```
+
+## 🛠️ Installation
+
+### Prerequisites
+
+- **Python 3.10** (recommended for best compatibility)
+- macOS, Linux, or Windows
+- At least 4GB RAM
+
+### Quick Setup
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/dustinober1/mario.git
+   cd mario
+   ```
+
+2. **Create virtual environment**:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   ```
+
+3. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## 🚀 Quick Start
+
+### Train Mario AI
+
+Run the main training script to start training Mario:
+
+```bash
+python train_mario.py
+```
+
+This will:
+- Create a Mario environment for World 1-1
+- Set up a PPO agent with optimized hyperparameters  
+- Train for 20,000 timesteps with live progress updates
+- Save checkpoints every 2,000 steps
+- Show distance traveled, rewards, and performance metrics
+- Save the final trained model
+
+### Run Basic Example
+
+For a simpler example:
+
+```bash
+python examples/basic_training.py
+```
+
+### Training Output
+
+You'll see live updates like:
+```
+🎮 Mario RL Training (Final Solution)
+==========================================
+1. Loading libraries...
+   ✓ Libraries loaded
+
+2. Creating Mario environment...  
+   ✓ Environment created with 7 actions
+   ✓ Training on World 1-1 (the first level)
+
+3. Creating AI agent...
+   ✓ PPO agent ready to learn!
+
+🚀 Training begins!
+   🎯 Goal: Teach Mario to complete World 1-1
+   📚 Method: Proximal Policy Optimization (PPO)
+   
+📈 Training Batch 1/10
+   Steps: 0 → 2,000
+   📊 Results:
+      Distance: 1,247 pixels 🆕 NEW RECORD!
+      Reward: 445.0
+      Episode length: 280 steps
+   🌟 Great progress! Mario is navigating well!
+```
+
+## 📊 Performance Metrics
+
+The training tracks several key metrics:
+
+- **Distance**: How far Mario travels (measured in pixels)
+- **Reward**: Score based on progress and survival
+- **Episode Length**: How many game steps Mario survives
+- **Training Time**: Real-time training duration
+
+### Performance Benchmarks
+
+- **Beginner**: 200-400 pixels (basic movement)
+- **Good**: 500-1000 pixels (consistent forward progress)  
+- **Great**: 1000-2000 pixels (navigating obstacles)
+- **Excellent**: 2000+ pixels (near level completion)
+
+## 🎮 How It Works
+
+1. **Environment**: Super Mario Bros World 1-1 with 7 possible actions
+2. **Observation**: Raw game screen (240x256x3 pixels)
+3. **Agent**: PPO algorithm learns optimal action sequences  
+4. **Rewards**: Positive for moving right, negative for dying
+5. **Training**: 20,000 timesteps of trial and error learning
+
+## 🔧 Configuration
+
+Key training parameters in `train_mario.py`:
+
+```python
+model = PPO(
+    'CnnPolicy',           # Convolutional Neural Network policy
+    learning_rate=2.5e-4,  # Learning rate
+    n_steps=512,           # Steps per update
+    batch_size=64,         # Batch size
+    gamma=0.99,            # Discount factor
+    # ... other hyperparameters
+)
+```
+
+## 📁 Output Files
+
+After training, you'll have:
+
+- `mario_checkpoint_*.zip`: Training checkpoints
+- `mario_trained_model.zip`: Final trained model  
+- `mario_training.log`: Training logs
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+1. **NumPy compatibility**: Use `numpy==1.26.4` for best compatibility
+2. **Environment warnings**: Gym deprecation warnings are normal and don't affect training
+3. **Performance**: Training may be slower on CPU-only systems
+
+### System Requirements
+
+- **Memory**: 4GB+ RAM recommended
+- **Storage**: 1GB free space for models and logs
+- **CPU**: Multi-core processor recommended for faster training
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes  
+4. Add tests if applicable
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [gym-super-mario-bros](https://github.com/Kautenja/gym-super-mario-bros) for the Mario environment
+- [Stable-Baselines3](https://stable-baselines3.readthedocs.io/) for the PPO implementation
+- [OpenAI Gym](https://gym.openai.com/) for the RL framework
+
+## 📚 Further Reading
+
+- [Proximal Policy Optimization (PPO) Paper](https://arxiv.org/abs/1707.06347)
+- [Stable-Baselines3 Documentation](https://stable-baselines3.readthedocs.io/)
+- [Reinforcement Learning: An Introduction](http://incompleteideas.net/book/the-book.html)
 │           ├── main.py         # Main CLI entry point
 │           ├── train.py        # Training command
 │           ├── evaluate.py     # Evaluation command
