@@ -1,33 +1,31 @@
 # Training Scripts
 
-This directory contains various training scripts for the Mario RL project. Each script represents different approaches and optimizations for training the Mario agent.
+This directory contains essential training scripts for the Mario RL project.
 
-## Scripts Overview
+## Available Scripts
 
-- `train_mario.py` - Original training script
-- `train_mario_production.py` - Clean production version with optimized output
-- `train_mario_live_visual.py` - Training with live visual rendering
-- `train_mario_gpu_simple.py` - GPU-optimized simple training
-- `train_mario_optimized.py` - Performance-optimized training
-- `train_mario_fixed.py` - Fixed version addressing buffer issues
-- `train_mario_visual.py` - Training with visual rendering support
-- `train_mario_manual_render.py` - Manual rendering control for demonstrations
+- `train_mario_production.py` - **Main training script** with optimized output and Apple Silicon MPS support
+- `train_mario_extended.py` - Extended training with checkpointing and resume capability
+- `record_mario_video.py` - Record gameplay videos from trained models
 
 ## Usage
 
-Run any training script from the project root directory:
+Run training scripts from the project root directory:
 
 ```bash
-# From the mario/ root directory
-cd ..
-python training_scripts/train_mario_production.py
+# Main production training (recommended)
+python3 training_scripts/train_mario_production.py
+
+# Extended training with checkpoints
+python3 training_scripts/train_mario_extended.py
+
+# Record video from trained model
+python3 training_scripts/record_mario_video.py
 ```
 
-## GPU Acceleration
+## Apple Silicon GPU Support
 
-Scripts with GPU optimization (using Apple Silicon MPS):
-- `train_mario_gpu_simple.py`
-- `train_mario_production.py`
+All scripts automatically detect and use Apple Silicon MPS (Metal Performance Shaders) for GPU acceleration when available, providing significant performance improvements over CPU-only training.
 - `train_mario_live_visual.py`
 
 These provide 2x performance improvement on M1/M2 Macs.

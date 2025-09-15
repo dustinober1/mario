@@ -1,82 +1,160 @@
-#!/bin/bash
+#!/bin/bash#!/bin/bash
 
-# Mario RL Docker Development Setup Script
-# This script sets up the complete development environment
 
-set -e
 
-# Colors for output
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
+# Mario RL Setup Script# Mario RL Docker Development Setup Script
+
+# Simple setup for local development and training# This script sets up the complete development environment
+
+
+
+set -eset -e
+
+
+
+# Colors for output# Colors for output
+
+GREEN='\033[0;32m'RED='\033[0;31m'
+
+BLUE='\033[0;34m'GREEN='\033[0;32m'
+
+RED='\033[0;31m'YELLOW='\033[1;33m'
+
+NC='\033[0m' # No ColorBLUE='\033[0;34m'
+
 NC='\033[0m' # No Color
 
-# Function to print colored output
 print_status() {
+
+    echo -e "${BLUE}[INFO]${NC} $1"# Function to print colored output
+
+}print_status() {
+
     echo -e "${BLUE}[INFO]${NC} $1"
-}
 
-print_success() {
+print_success() {}
+
     echo -e "${GREEN}[SUCCESS]${NC} $1"
-}
 
-print_warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1"
-}
+}print_success() {
 
-print_error() {
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
+
+print_error() {}
+
     echo -e "${RED}[ERROR]${NC} $1"
-}
 
-print_header() {
-    echo -e "\n${BLUE}============================================${NC}"
-    echo -e "${BLUE} $1${NC}"
-    echo -e "${BLUE}============================================${NC}\n"
-}
+}print_warning() {
 
-# Function to check if command exists
-command_exists() {
-    command -v "$1" >/dev/null 2>&1
-}
+    echo -e "${YELLOW}[WARNING]${NC} $1"
 
-# Function to check Docker installation
-check_docker() {
-    print_header "Checking Docker Installation"
-    
-    if ! command_exists docker; then
-        print_error "Docker is not installed. Please install Docker first."
-        print_status "Visit: https://docs.docker.com/get-docker/"
-        exit 1
-    fi
-    
-    if ! command_exists docker-compose; then
-        print_error "Docker Compose is not installed. Please install Docker Compose first."
-        print_status "Visit: https://docs.docker.com/compose/install/"
-        exit 1
-    fi
-    
-    # Check if Docker is running
-    if ! docker info >/dev/null 2>&1; then
-        print_error "Docker is not running. Please start Docker first."
-        exit 1
-    fi
-    
-    print_success "Docker and Docker Compose are installed and running"
-    
-    # Show versions
-    print_status "Docker version: $(docker --version)"
-    print_status "Docker Compose version: $(docker-compose --version)"
-}
+# Main setup function}
 
-# Function to setup directories
-setup_directories() {
-    print_header "Setting Up Project Directories"
+main() {
+
+    print_status "Setting up Mario RL development environment..."print_error() {
+
+        echo -e "${RED}[ERROR]${NC} $1"
+
+    # Check Python version}
+
+    if command -v python3 &> /dev/null; then
+
+        PYTHON_VERSION=$(python3 --version | cut -d' ' -f2 | cut -d'.' -f1,2)print_header() {
+
+        print_status "Found Python $PYTHON_VERSION"    echo -e "\n${BLUE}============================================${NC}"
+
+        if [[ "$PYTHON_VERSION" < "3.8" ]]; then    echo -e "${BLUE} $1${NC}"
+
+            print_error "Python 3.8+ required. Found $PYTHON_VERSION"    echo -e "${BLUE}============================================${NC}\n"
+
+            exit 1}
+
+        fi
+
+    else# Function to check if command exists
+
+        print_error "Python 3 not found. Please install Python 3.8+"command_exists() {
+
+        exit 1    command -v "$1" >/dev/null 2>&1
+
+    fi}
+
     
-    # Create necessary directories
+
+    # Create virtual environment# Function to check Docker installation
+
+    if [[ ! -d ".venv" ]]; thencheck_docker() {
+
+        print_status "Creating virtual environment..."    print_header "Checking Docker Installation"
+
+        python3 -m venv .venv    
+
+        print_success "Virtual environment created"    if ! command_exists docker; then
+
+    else        print_error "Docker is not installed. Please install Docker first."
+
+        print_status "Virtual environment already exists"        print_status "Visit: https://docs.docker.com/get-docker/"
+
+    fi        exit 1
+
+        fi
+
+    # Activate virtual environment    
+
+    print_status "Activating virtual environment..."    if ! command_exists docker-compose; then
+
+    source .venv/bin/activate        print_error "Docker Compose is not installed. Please install Docker Compose first."
+
+            print_status "Visit: https://docs.docker.com/compose/install/"
+
+    # Upgrade pip        exit 1
+
+    print_status "Upgrading pip..."    fi
+
+    pip install --upgrade pip    
+
+        # Check if Docker is running
+
+    # Install dependencies    if ! docker info >/dev/null 2>&1; then
+
+    print_status "Installing dependencies..."        print_error "Docker is not running. Please start Docker first."
+
+    pip install -r requirements.txt        exit 1
+
+        fi
+
+    # Install package in development mode    
+
+    print_status "Installing Mario RL package..."    print_success "Docker and Docker Compose are installed and running"
+
+    pip install -e .    
+
+        # Show versions
+
+    print_success "Setup complete!"    print_status "Docker version: $(docker --version)"
+
+    echo    print_status "Docker Compose version: $(docker-compose --version)"
+
+    print_status "To get started:"}
+
+    echo "  1. Activate the environment: source .venv/bin/activate"
+
+    echo "  2. Run training: python3 training_scripts/train_mario_production.py"# Function to setup directories
+
+    echo "  3. Record videos: python3 training_scripts/record_mario_video.py"setup_directories() {
+
+    echo    print_header "Setting Up Project Directories"
+
+    print_status "Apple Silicon users automatically get MPS GPU acceleration!"    
+
+}    # Create necessary directories
+
     directories=(
-        "models"
-        "videos/training"
+
+# Run main function        "models"
+
+main "$@"        "videos/training"
         "videos/evaluation"
         "logs"
         "data"
